@@ -16,12 +16,14 @@ class Filter: ObservableObject, Hashable {
         case brightness
         case grayscale
         case inverted
+        case pixelated
         
         var title: String {
             switch self {
             case .brightness: return "Brightness"
             case .grayscale: return "Grayscale"
             case .inverted: return "Inverted"
+            case .pixelated: return "Pixelated"
             }
         }
         
@@ -30,6 +32,7 @@ class Filter: ObservableObject, Hashable {
             case .brightness: return [Control(name: self.title, range: -1...1, initialValue: 0)]
             case .grayscale: return []
             case .inverted: return []
+            case .pixelated: return []
             }
         }
     }

@@ -16,7 +16,7 @@ kernel void compute(texture2d<float, access::read> input [[texture(0)]],
     output.write(color, id);
 }
 
-kernel void graycale(texture2d<float, access::read> input [[texture(0)]],
+kernel void grayscale(texture2d<float, access::read> input [[texture(0)]],
                     texture2d<float, access::write> output [[texture(1)]],
                     uint2 id [[thread_position_in_grid]]) {
     float4 color = input.read(id);

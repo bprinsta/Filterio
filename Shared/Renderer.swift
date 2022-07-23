@@ -13,6 +13,10 @@ class Renderer: NSObject {
     static var library: MTLLibrary!
     var pipelineState: MTLComputePipelineState!
     
+    var invertPipeline: MTLComputePipelineState!
+    var grayscalePipeline: MTLComputePipelineState!
+    var pixelatePipeline: MTLComputePipelineState!
+    
     var image: MTLTexture!
     
     init(metalView: MTKView) {
@@ -27,29 +31,40 @@ class Renderer: NSObject {
         
         let textureLoader = MTKTextureLoader(device: device)
         let url = Bundle.main.url(forResource: "nature", withExtension: "jpg")!
+        let nsImage = NSImage(byReferencing: url)
+        print(nsImage.size.width)
+        print(nsImage.size.height)
 
         do {
-            pipelineState = try Renderer.buildComputePipelineWith(device: device, metalKitView: metalView)
+            invertPipeline = try Renderer.buildComputePipelineWithFunction(name: "compute", with: device, metalKitView: metalView)
+            grayscalePipeline = try Renderer.buildComputePipelineWithFunction(name: "grayscale", with: device, metalKitView: metalView)
+            pixelatePipeline = try Renderer.buildComputePipelineWithFunction(name: "pixelate", with: device, metalKitView: metalView)
             image = try textureLoader.newTexture(URL: url, options: [:])
-
         } catch {
             fatalError("Unable to compile render pipeline state: \(error)")
         }
+        pipelineState = invertPipeline
         
         super.init()
         metalView.clearColor = MTLClearColor(red: 1.0, green: 0.5, blue: 0.5, alpha: 1.0)
         metalView.delegate = self
     }
     
+    /// Switch the currently active pipeline state to use a given filter
+    func apply(filter: Filter) {
+        switch filter.type {
+        case .brightness: pipelineState = invertPipeline
+        case .inverted: pipelineState = invertPipeline
+        case .grayscale: pipelineState = grayscalePipeline
+        case .pixelated: pipelineState = pixelatePipeline
+        }
+    }
+    
     /// Create custom rendering pipeline, which loads shaders using `device`, out puts to the format of `metalKitView`
-    static func buildComputePipelineWith(device: MTLDevice, metalKitView: MTKView) throws -> MTLComputePipelineState {
+    static func buildComputePipelineWithFunction(name: String, with device: MTLDevice, metalKitView: MTKView) throws -> MTLComputePipelineState {
         let pipelineDescriptor = MTLComputePipelineDescriptor()
-        
-        // Create shader function library
         Self.library = device.makeDefaultLibrary()
-        
-        pipelineDescriptor.computeFunction = library.makeFunction(name: "compute")
-        
+        pipelineDescriptor.computeFunction = library.makeFunction(name: name)
         return try device.makeComputePipelineState(descriptor: pipelineDescriptor, options: [], reflection: nil)
     }
 }

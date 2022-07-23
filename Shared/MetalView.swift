@@ -34,28 +34,36 @@ struct MetalView: View {
                 }
                 .frame(width: 800, height: 500, alignment: .center)
             
-            Form(content: {
-                Section {
-                    Picker("Filter", selection: $selectedFilter) {
-                        ForEach(Filter.allTypes, id: \.self) {
-                            Text($0.type.title)
-                        }
-                    }.pickerStyle(.menu)
-                }
-                
-                ForEach($selectedFilter.controls) { $control in
-                    Slider(value: $control.value, in: control.range) {
-                        Text("\(control.name)")
-                    } minimumValueLabel: {
-                        Text(String(format: "%.2f", control.range.lowerBound))
-                    } maximumValueLabel: {
-                        Text(String(format: "%.2f", control.range.upperBound))
-                    } onEditingChanged: { editing in
-                        print(control.value)
+            filterController
+        }
+    }
+    
+    var filterController: some View {
+        Form(content: {
+            Section {
+                Picker("Filter", selection: $selectedFilter) {
+                    ForEach(Filter.allTypes, id: \.self) {
+                        Text($0.type.title)
                     }
                 }
-            })
-        }
+                .pickerStyle(.menu)
+                .onChange(of: selectedFilter) { newValue in
+                    renderer?.apply(filter: newValue)
+                }
+            }
+            
+            ForEach($selectedFilter.controls) { $control in
+                Slider(value: $control.value, in: control.range) {
+                    Text("\(control.name)")
+                } minimumValueLabel: {
+                    Text(String(format: "%.2f", control.range.lowerBound))
+                } maximumValueLabel: {
+                    Text(String(format: "%.2f", control.range.upperBound))
+                } onEditingChanged: { editing in
+                    print(control.value)
+                }
+            }
+        })
     }
 }
 
@@ -104,6 +112,7 @@ struct MetalViewRepresentable: ViewRepresentable {
         metalView.drawableSize = metalView.frame.size
         metalView.enableSetNeedsDisplay = true
         metalView.autoResizeDrawable = true
+        metalView.isPaused = false
     }
     
     func updateMetalView() {}
