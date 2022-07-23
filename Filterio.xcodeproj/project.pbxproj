@@ -13,6 +13,12 @@
 		AC05C276288C6ED70042C00D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C264288C6ED50042C00D /* ContentView.swift */; };
 		AC05C277288C6ED70042C00D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC05C265288C6ED70042C00D /* Assets.xcassets */; };
 		AC05C278288C6ED70042C00D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC05C265288C6ED70042C00D /* Assets.xcassets */; };
+		AC05C282288C6F200042C00D /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C281288C6F200042C00D /* MetalView.swift */; };
+		AC05C283288C6F200042C00D /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C281288C6F200042C00D /* MetalView.swift */; };
+		AC05C285288C70470042C00D /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C284288C70470042C00D /* Renderer.swift */; };
+		AC05C286288C70470042C00D /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C284288C70470042C00D /* Renderer.swift */; };
+		AC05C288288C73A90042C00D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC05C287288C73A90042C00D /* Shaders.metal */; };
+		AC05C289288C73A90042C00D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC05C287288C73A90042C00D /* Shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +28,9 @@
 		AC05C26A288C6ED70042C00D /* Filterio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC05C270288C6ED70042C00D /* Filterio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Filterio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC05C272288C6ED70042C00D /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		AC05C281288C6F200042C00D /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
+		AC05C284288C70470042C00D /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		AC05C287288C73A90042C00D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +65,10 @@
 			children = (
 				AC05C263288C6ED50042C00D /* FilterioApp.swift */,
 				AC05C264288C6ED50042C00D /* ContentView.swift */,
+				AC05C281288C6F200042C00D /* MetalView.swift */,
 				AC05C265288C6ED70042C00D /* Assets.xcassets */,
+				AC05C284288C70470042C00D /* Renderer.swift */,
+				AC05C287288C73A90042C00D /* Shaders.metal */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -176,8 +188,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC05C285288C70470042C00D /* Renderer.swift in Sources */,
+				AC05C282288C6F200042C00D /* MetalView.swift in Sources */,
 				AC05C275288C6ED70042C00D /* ContentView.swift in Sources */,
 				AC05C273288C6ED70042C00D /* FilterioApp.swift in Sources */,
+				AC05C288288C73A90042C00D /* Shaders.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,8 +200,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC05C286288C70470042C00D /* Renderer.swift in Sources */,
+				AC05C283288C6F200042C00D /* MetalView.swift in Sources */,
 				AC05C276288C6ED70042C00D /* ContentView.swift in Sources */,
 				AC05C274288C6ED70042C00D /* FilterioApp.swift in Sources */,
+				AC05C289288C73A90042C00D /* Shaders.metal in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
