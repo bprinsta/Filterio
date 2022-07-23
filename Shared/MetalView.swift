@@ -12,7 +12,7 @@ struct MetalView: View {
     @State private var renderer: Renderer?
     @State private var metalView = MTKView()
         
-    @State private var selectedFilter = Filter(type: .inverted)
+    @State private var selectedFilter = Filter(type: .rgbToGbr)
     
     var body: some View {
         VStack(alignment: .leading, spacing:  16) {

@@ -13,7 +13,7 @@ class Renderer: NSObject {
     static var library: MTLLibrary!
     var pipelineState: MTLComputePipelineState!
     
-    var invertPipeline: MTLComputePipelineState!
+    var rgbToGbrPipeline: MTLComputePipelineState!
     var grayscalePipeline: MTLComputePipelineState!
     var pixelatePipeline: MTLComputePipelineState!
     
@@ -36,14 +36,14 @@ class Renderer: NSObject {
         print(nsImage.size.height)
 
         do {
-            invertPipeline = try Renderer.buildComputePipelineWithFunction(name: "compute", with: device, metalKitView: metalView)
+            rgbToGbrPipeline = try Renderer.buildComputePipelineWithFunction(name: "rgb_to_gbr", with: device, metalKitView: metalView)
             grayscalePipeline = try Renderer.buildComputePipelineWithFunction(name: "grayscale", with: device, metalKitView: metalView)
             pixelatePipeline = try Renderer.buildComputePipelineWithFunction(name: "pixelate", with: device, metalKitView: metalView)
             image = try textureLoader.newTexture(URL: url, options: [:])
         } catch {
             fatalError("Unable to compile render pipeline state: \(error)")
         }
-        pipelineState = invertPipeline
+        pipelineState = rgbToGbrPipeline
         
         super.init()
         metalView.clearColor = MTLClearColor(red: 1.0, green: 0.5, blue: 0.5, alpha: 1.0)
@@ -53,8 +53,8 @@ class Renderer: NSObject {
     /// Switch the currently active pipeline state to use a given filter
     func apply(filter: Filter) {
         switch filter.type {
-        case .brightness: pipelineState = invertPipeline
-        case .inverted: pipelineState = invertPipeline
+        case .brightness: pipelineState = rgbToGbrPipeline
+        case .rgbToGbr: pipelineState = rgbToGbrPipeline
         case .grayscale: pipelineState = grayscalePipeline
         case .pixelated: pipelineState = pixelatePipeline
         }
