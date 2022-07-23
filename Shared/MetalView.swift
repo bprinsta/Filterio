@@ -11,16 +11,50 @@ import MetalKit
 struct MetalView: View {
     @State private var renderer: Renderer?
     @State private var metalView = MTKView()
+        
+    @State private var selectedFilter = Filter(type: .inverted)
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing:  16) {
+            HStack {
+                Button("Upload", role: nil) {
+                    print("supposedly upload image")
+                }
+                
+                Button("Export", role: nil) {
+                    print("supposedly export image")
+                }
+            }
+            
             MetalViewRepresentable(
                 renderer: renderer,
                 metalView: $metalView)
                 .onAppear {
                     renderer = Renderer(metalView: metalView)
                 }
-            Text("Metal View")
+                .frame(width: 800, height: 500, alignment: .center)
+            
+            Form(content: {
+                Section {
+                    Picker("Filter", selection: $selectedFilter) {
+                        ForEach(Filter.allTypes, id: \.self) {
+                            Text($0.type.title)
+                        }
+                    }.pickerStyle(.menu)
+                }
+                
+                ForEach($selectedFilter.controls) { $control in
+                    Slider(value: $control.value, in: control.range) {
+                        Text("\(control.name)")
+                    } minimumValueLabel: {
+                        Text(String(format: "%.2f", control.range.lowerBound))
+                    } maximumValueLabel: {
+                        Text(String(format: "%.2f", control.range.upperBound))
+                    } onEditingChanged: { editing in
+                        print(control.value)
+                    }
+                }
+            })
         }
     }
 }
