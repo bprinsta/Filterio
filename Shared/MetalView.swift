@@ -20,7 +20,6 @@ struct MetalView: View {
                 .onAppear {
                     renderer = Renderer(metalView: metalView)
                 }
-                .border(Color.white, width: 5)
             Text("Metal View")
         }
     }
@@ -37,10 +36,8 @@ struct MetalView_Previews: PreviewProvider {
 
 #if os(macOS)
 typealias ViewRepresentable = NSViewRepresentable
-typealias MyMetalView = NSView
 #elseif os(iOS)
 typealias ViewRepresentable = UIViewRepresentable
-typealias MyMetalView = UIView
 #endif
 
 struct MetalViewRepresentable: ViewRepresentable {
@@ -49,7 +46,8 @@ struct MetalViewRepresentable: ViewRepresentable {
     
 #if os(macOS)
     func makeNSView(context: Context) -> some NSView {
-        metalView
+        configureMetalView(metalView)
+        return metalView
     }
     
     func updateNSView(_ uiView: NSViewType, context: Context) {
@@ -57,7 +55,8 @@ struct MetalViewRepresentable: ViewRepresentable {
     }
 #elseif os(iOS)
     func makeUIView(context: Context) -> MTKView {
-        metalView
+        configureMetalView(metalView)
+        return metalView
     }
     
     func updateUIView(_ uiView: MTKView, context: Context) {
@@ -65,7 +64,13 @@ struct MetalViewRepresentable: ViewRepresentable {
     }
 #endif
     
-    func makeMetalView(_ metalView: MyMetalView) {}
+    func configureMetalView(_ metalView: MTKView) {
+        metalView.preferredFramesPerSecond = 60
+        metalView.framebufferOnly = false
+        metalView.drawableSize = metalView.frame.size
+        metalView.enableSetNeedsDisplay = true
+        metalView.autoResizeDrawable = true
+    }
     
     func updateMetalView() {}
 }

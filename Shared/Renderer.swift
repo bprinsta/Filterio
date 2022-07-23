@@ -16,8 +16,6 @@ class Renderer: NSObject {
     var image: MTLTexture!
     
     init(metalView: MTKView) {
-        metalView.framebufferOnly = false
-
         guard let device = MTLCreateSystemDefaultDevice(),
               let commandQueue = device.makeCommandQueue() else {
                   fatalError("GPU not available")
