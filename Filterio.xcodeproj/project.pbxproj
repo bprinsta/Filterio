@@ -19,6 +19,8 @@
 		AC05C286288C70470042C00D /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C284288C70470042C00D /* Renderer.swift */; };
 		AC05C288288C73A90042C00D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC05C287288C73A90042C00D /* Shaders.metal */; };
 		AC05C289288C73A90042C00D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC05C287288C73A90042C00D /* Shaders.metal */; };
+		AC05C28B288C783E0042C00D /* nature.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC05C28A288C783E0042C00D /* nature.jpg */; };
+		AC05C28C288C783E0042C00D /* nature.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC05C28A288C783E0042C00D /* nature.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,7 @@
 		AC05C281288C6F200042C00D /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		AC05C284288C70470042C00D /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		AC05C287288C73A90042C00D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		AC05C28A288C783E0042C00D /* nature.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nature.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +72,7 @@
 				AC05C265288C6ED70042C00D /* Assets.xcassets */,
 				AC05C284288C70470042C00D /* Renderer.swift */,
 				AC05C287288C73A90042C00D /* Shaders.metal */,
+				AC05C28A288C783E0042C00D /* nature.jpg */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -169,6 +173,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC05C28B288C783E0042C00D /* nature.jpg in Resources */,
 				AC05C277288C6ED70042C00D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -177,6 +182,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC05C28C288C783E0042C00D /* nature.jpg in Resources */,
 				AC05C278288C6ED70042C00D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

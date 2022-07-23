@@ -20,6 +20,8 @@ struct MetalView: View {
                 .onAppear {
                     renderer = Renderer(metalView: metalView)
                 }
+                .border(Color.white, width: 5)
+            Text("Metal View")
         }
     }
 }
