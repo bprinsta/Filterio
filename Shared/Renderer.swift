@@ -15,6 +15,7 @@ class Renderer: NSObject {
     
     var brightnessPipeline: MTLComputePipelineState!
     var contrastPipeline: MTLComputePipelineState!
+    var gammaPipeline: MTLComputePipelineState!
     var rgbToGbrPipeline: MTLComputePipelineState!
     var grayscalePipeline: MTLComputePipelineState!
     var pixelatePipeline: MTLComputePipelineState!
@@ -43,6 +44,7 @@ class Renderer: NSObject {
         do {
             rgbToGbrPipeline = try Renderer.buildComputePipelineWithFunction(name: "rgb_to_gbr", with: device, metalKitView: metalView)
             contrastPipeline = try Renderer.buildComputePipelineWithFunction(name: "contrast", with: device, metalKitView: metalView)
+            gammaPipeline = try Renderer.buildComputePipelineWithFunction(name: "gamma", with: device, metalKitView: metalView)
             brightnessPipeline = try Renderer.buildComputePipelineWithFunction(name: "brightness", with: device, metalKitView: metalView)
             grayscalePipeline = try Renderer.buildComputePipelineWithFunction(name: "grayscale", with: device, metalKitView: metalView)
             pixelatePipeline = try Renderer.buildComputePipelineWithFunction(name: "pixelate", with: device, metalKitView: metalView)
@@ -64,6 +66,7 @@ class Renderer: NSObject {
         switch filter.type {
         case .brightness: pipelineState = brightnessPipeline
         case .contrast: pipelineState = contrastPipeline
+        case .gamma: pipelineState = gammaPipeline
         case .rgbToGbr: pipelineState = rgbToGbrPipeline
         case .grayscale: pipelineState = grayscalePipeline
         case .pixelated: pipelineState = pixelatePipeline
@@ -112,7 +115,7 @@ extension Renderer: MTKViewDelegate {
     
     func setFilterInputs(commandEncoder: MTLComputeCommandEncoder) {
         for (index, control) in selectedFilter.controls.enumerated() {
-            commandEncoder.setBytes(&control.value, length: MemoryLayout<Float>.stride, index: 10 + index)
+            commandEncoder.setBytes(&control.outputValue, length: MemoryLayout<Float>.stride, index: 10 + index)
         }
     }
 }

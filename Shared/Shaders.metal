@@ -37,6 +37,18 @@ kernel void contrast(texture2d<float, access::read> input [[texture(0)]],
     output.write(color, id);
 }
 
+// Apply gamma correction
+kernel void gamma(texture2d<float, access::read> input [[texture(0)]],
+                     texture2d<float, access::write> output [[texture(1)]],
+                     constant float &gammaValue [[buffer(10)]],
+                     uint2 id [[thread_position_in_grid]]) {
+    float4 color = input.read(id);
+    color = float4(pow(color.r, gammaValue),
+                   pow(color.g, gammaValue),
+                   pow(color.b, gammaValue), 1.0);
+    output.write(color, id);
+}
+
 kernel void rgb_to_gbr(texture2d<float, access::read> input [[texture(0)]],
                     texture2d<float, access::write> output [[texture(1)]],
                     uint2 id [[thread_position_in_grid]]) {
