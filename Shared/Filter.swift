@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct FilterS {
+struct Filter {
     let type: FilterType
     let controls: [FilterControl]
 }
 
 struct FilterControl {
     let name: String
-    let range: ClosedRange<Float>
+    let domain: ClosedRange<Float>
     var value: Float
     
     // processing to convert input value to appropriate value needed in kernel. We use this closure to perform computations that would be needlessly repeated on the gpu
@@ -42,9 +42,9 @@ enum FilterType: CaseIterable {
     
     var controls: [FilterControl] {
         switch self {
-        case .brightness: return [FilterControl(name: "Ratio", range: -1...1, value: 0)]
-        case .contrast: return [FilterControl(name: "Ratio", range: -1...1, value: 0)]
-        case .gamma: return [FilterControl(name: "γ", range: -1...1, value: 0, valueProcessor: { exp($0) })]
+        case .brightness: return [FilterControl(name: "Ratio", domain: -1...1, value: 0)]
+        case .contrast: return [FilterControl(name: "Ratio", domain: -1...1, value: 0)]
+        case .gamma: return [FilterControl(name: "γ", domain: -1...1, value: 0, valueProcessor: { exp($0) })]
         case .grayscale: return []
         case .rgbToGbr: return []
         case .pixelated: return []

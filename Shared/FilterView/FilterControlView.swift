@@ -22,15 +22,15 @@ class FilterControlViewModel: ObservableObject, Identifiable {
     
     init(control: FilterControl) {
         value = control.value
-        valueRange = control.range
-        minimumTitle = String(format: "%.2f", control.range.lowerBound)
-        maximumTitle = String(format: "%.2f", control.range.upperBound)
+        valueRange = control.domain
+        minimumTitle = String(format: "%.2f", control.domain.lowerBound)
+        maximumTitle = String(format: "%.2f", control.domain.upperBound)
         controlName = control.name
         valueProcessor = control.valueProcessor
     }
     
     func toControl() -> FilterControl {
-        FilterControl(name: controlName, range: valueRange, value: valueProcessor(value))
+        FilterControl(name: controlName, domain: valueRange, value: valueProcessor(value))
     }
 }
 

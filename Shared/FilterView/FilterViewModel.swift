@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 protocol FilterViewModelDelegate: AnyObject {
-    func apply(filter: FilterS)
+    func apply(filter: Filter)
 }
 
 class FilterViewModel: FilterControlViewDelegate {
@@ -26,8 +26,8 @@ class FilterViewModel: FilterControlViewDelegate {
         self.delegate = delegate
     }
     
-    func toFilter() -> FilterS {
-        FilterS(type: type, controls: controlViewModels.map { $0.toControl() })
+    func toFilter() -> Filter {
+        Filter(type: type, controls: controlViewModels.map { $0.toControl() })
     }
     
     func controlValueDidChange() {
