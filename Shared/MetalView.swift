@@ -40,12 +40,9 @@ struct MetalView: View {
             
             Divider()
             
-            VStack(alignment: .leading, spacing:  16) {
-                filterController
-                Spacer()
-            }
-            .frame(width: 250)
-            .padding()
+            filterController
+                .frame(width: 250)
+                .padding()
         }
         .toolbar {
             Button {
@@ -61,26 +58,40 @@ struct MetalView: View {
             }
         }
         .onChange(of: selectedFilterType) { newValue in
+            // TODO: fix bug of apply being called twice when changing filter for the first time
             selectedFilterViewModel = FilterViewModel(type: newValue, delegate: renderer)
             renderer?.apply(filter: selectedFilterViewModel.toFilter())
         }
     }
     
     var filterController: some View {
-        Form(content: {
-            Section {
-                Picker("Filter", selection: $selectedFilterType) {
-                    ForEach(FilterType.allCases, id: \.self) {
-                        Text($0.title)
+        VStack(alignment: .leading, spacing:  16) {
+            Form(content: {
+                Section {
+                    Picker("Filter", selection: $selectedFilterType) {
+                        ForEach(FilterType.allCases, id: \.self) {
+                            Text($0.title)
+                        }
                     }
+                    .pickerStyle(.menu)
                 }
-                .pickerStyle(.menu)
+                
+                ForEach(selectedFilterViewModel.controlViewModels) { viewModel in
+                    FilterControlView(viewModel: viewModel, delegate: selectedFilterViewModel)
+                }
+            })
+            
+            if !selectedFilterViewModel.controlViewModels.isEmpty {
+                Button(role: .destructive) {
+                    selectedFilterViewModel.reset()
+                } label: {
+                    Text("Reset")
+                }
             }
             
-            ForEach(selectedFilterViewModel.controlViewModels) { viewModel in
-                FilterControlView(viewModel: viewModel, delegate: selectedFilterViewModel)
-            }
-        })
+            Spacer()
+            
+        }
     }
 }
 

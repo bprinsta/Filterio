@@ -33,6 +33,12 @@ class FilterViewModel: FilterControlViewDelegate {
     func controlValueDidChange() {
         delegate?.apply(filter: toFilter())
     }
+    
+    func reset() {
+        for controlViewModel in controlViewModels {
+            controlViewModel.reset()
+        }
+    }
 }
 
 

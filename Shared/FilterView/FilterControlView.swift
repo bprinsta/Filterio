@@ -14,6 +14,7 @@ protocol FilterControlViewDelegate: AnyObject {
 class FilterControlViewModel: ObservableObject, Identifiable {
     var id: String { controlName }
     @Published var value: Float
+    let initialValue: Float
     let minimumTitle: String
     let maximumTitle: String
     let controlName: String
@@ -22,6 +23,7 @@ class FilterControlViewModel: ObservableObject, Identifiable {
     
     init(control: FilterControl) {
         value = control.value
+        initialValue = control.value
         valueRange = control.domain
         minimumTitle = String(format: "%.2f", control.domain.lowerBound)
         maximumTitle = String(format: "%.2f", control.domain.upperBound)
@@ -31,6 +33,10 @@ class FilterControlViewModel: ObservableObject, Identifiable {
     
     func toControl() -> FilterControl {
         FilterControl(name: controlName, domain: valueRange, value: valueProcessor(value))
+    }
+    
+    func reset() {
+        value = initialValue
     }
 }
 

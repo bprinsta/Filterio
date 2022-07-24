@@ -53,9 +53,8 @@ class Renderer: NSObject {
             fatalError("Unable to compile render pipeline state: \(error)")
         }
         
-        pipelineState = brightnessPipeline
-        
         super.init()
+        apply(filter: selectedFilter)
         metalView.clearColor = MTLClearColor(red: 1.0, green: 0.5, blue: 0.5, alpha: 1.0)
         metalView.delegate = self
     }
