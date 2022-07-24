@@ -12,7 +12,7 @@ struct MetalView: View {
     @State private var renderer: Renderer?
     @State private var metalView = MTKView()
         
-    @State private var selectedFilter = Filter(type: .rgbToGbr)
+    @State private var selectedFilter = Filter(type: .brightness)
     
     var body: some View {
         VStack(alignment: .leading, spacing:  16) {
@@ -30,7 +30,7 @@ struct MetalView: View {
                 renderer: renderer,
                 metalView: $metalView)
                 .onAppear {
-                    renderer = Renderer(metalView: metalView)
+                    renderer = Renderer(metalView: metalView, filter: selectedFilter)
                 }
                 .frame(width: 800, height: 500, alignment: .center)
             
@@ -59,8 +59,6 @@ struct MetalView: View {
                     Text(String(format: "%.2f", control.range.lowerBound))
                 } maximumValueLabel: {
                     Text(String(format: "%.2f", control.range.upperBound))
-                } onEditingChanged: { editing in
-                    print(control.value)
                 }
             }
         })

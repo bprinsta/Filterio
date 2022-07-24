@@ -8,6 +8,21 @@
 #include <metal_stdlib>
 using namespace metal;
 
+kernel void brightness(texture2d<float, access::read> input [[texture(0)]],
+                    texture2d<float, access::write> output [[texture(1)]],
+                    constant float &ratio [[buffer(10)]],
+                    uint2 id [[thread_position_in_grid]]) {
+    float alpha = ratio < 0.0 ? 1 + ratio : 1 - ratio;
+    // blend with black when ratio < 0 to make image darker, and blend with with white when ratio > 0 to make image lighter
+    float dirLuminance = ratio < 0.0 ? 0 : 1;
+    
+    float4 color = input.read(id);
+    color = float4(alpha * color.r + (1 - alpha) * dirLuminance,
+                   alpha * color.g + (1 - alpha) * dirLuminance,
+                   alpha * color.b + (1 - alpha) * dirLuminance, 1.0);
+    output.write(color, id);
+}
+
 kernel void rgb_to_gbr(texture2d<float, access::read> input [[texture(0)]],
                     texture2d<float, access::write> output [[texture(1)]],
                     uint2 id [[thread_position_in_grid]]) {

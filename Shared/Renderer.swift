@@ -13,13 +13,16 @@ class Renderer: NSObject {
     static var library: MTLLibrary!
     var pipelineState: MTLComputePipelineState!
     
+    var brightnessPipeline: MTLComputePipelineState!
     var rgbToGbrPipeline: MTLComputePipelineState!
     var grayscalePipeline: MTLComputePipelineState!
     var pixelatePipeline: MTLComputePipelineState!
     
+    var selectedFilter: Filter
+    
     var image: MTLTexture!
     
-    init(metalView: MTKView) {
+    init(metalView: MTKView, filter: Filter) {
         guard let device = MTLCreateSystemDefaultDevice(),
               let commandQueue = device.makeCommandQueue() else {
                   fatalError("GPU not available")
@@ -28,6 +31,7 @@ class Renderer: NSObject {
         Renderer.device = device
         Renderer.commandQueue = commandQueue
         metalView.device = device
+        selectedFilter = filter
         
         let textureLoader = MTKTextureLoader(device: device)
         let url = Bundle.main.url(forResource: "nature", withExtension: "jpg")!
@@ -37,13 +41,15 @@ class Renderer: NSObject {
 
         do {
             rgbToGbrPipeline = try Renderer.buildComputePipelineWithFunction(name: "rgb_to_gbr", with: device, metalKitView: metalView)
+            brightnessPipeline = try Renderer.buildComputePipelineWithFunction(name: "brightness", with: device, metalKitView: metalView)
             grayscalePipeline = try Renderer.buildComputePipelineWithFunction(name: "grayscale", with: device, metalKitView: metalView)
             pixelatePipeline = try Renderer.buildComputePipelineWithFunction(name: "pixelate", with: device, metalKitView: metalView)
             image = try textureLoader.newTexture(URL: url, options: [:])
         } catch {
             fatalError("Unable to compile render pipeline state: \(error)")
         }
-        pipelineState = rgbToGbrPipeline
+        
+        pipelineState = brightnessPipeline
         
         super.init()
         metalView.clearColor = MTLClearColor(red: 1.0, green: 0.5, blue: 0.5, alpha: 1.0)
@@ -52,8 +58,9 @@ class Renderer: NSObject {
     
     /// Switch the currently active pipeline state to use a given filter
     func apply(filter: Filter) {
+        selectedFilter = filter
         switch filter.type {
-        case .brightness: pipelineState = rgbToGbrPipeline
+        case .brightness: pipelineState = brightnessPipeline
         case .rgbToGbr: pipelineState = rgbToGbrPipeline
         case .grayscale: pipelineState = grayscalePipeline
         case .pixelated: pipelineState = pixelatePipeline
@@ -83,6 +90,8 @@ extension Renderer: MTKViewDelegate {
         commandEncoder.setTexture(image, index: 0)
         commandEncoder.setTexture(drawable.texture, index: 1)
         
+        setFilterInputs(commandEncoder: commandEncoder)
+        
         var width = pipelineState.threadExecutionWidth
         var height = pipelineState.maxTotalThreadsPerThreadgroup / width
         
@@ -98,5 +107,9 @@ extension Renderer: MTKViewDelegate {
         commandBuffer.commit()
     }
     
-    
+    func setFilterInputs(commandEncoder: MTLComputeCommandEncoder) {
+        for (index, control) in selectedFilter.controls.enumerated() {
+            commandEncoder.setBytes(&control.value, length: MemoryLayout<Float>.stride, index: 10 + index)
+        }
+    }
 }

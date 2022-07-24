@@ -29,7 +29,7 @@ class Filter: ObservableObject, Hashable {
         
         var controls: [Control] {
             switch self {
-            case .brightness: return [Control(name: self.title, range: -1...1, initialValue: 0)]
+            case .brightness: return [Control(name: "Ratio", range: -1...1, initialValue: 0)]
             case .grayscale: return []
             case .rgbToGbr: return []
             case .pixelated: return []
