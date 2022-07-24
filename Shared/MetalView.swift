@@ -10,21 +10,18 @@ import MetalKit
 
 struct MetalView: View {
     @State private var renderer: Renderer?
-    @State private var metalView = MTKView()
-        
-    @State private var selectedFilter = Filter(type: .brightness)
+    @State private var metalView: MTKView = MTKView()
+    @State private var selectedFilter: Filter = Filter(type: .brightness)
+    @State private var image: NSImage
+    
+    init() {
+        let image = NSImage(byReferencing: Bundle.main.url(forResource: "nature", withExtension: "jpg")!)
+        self.image = image
+    }
     
     var body: some View {
-        VStack(alignment: .leading, spacing:  16) {
-            HStack {
-                Button("Upload", role: nil) {
-                    print("supposedly upload image")
-                }
-                
-                Button("Export", role: nil) {
-                    print("supposedly export image")
-                }
-            }
+        HStack(alignment: .top, spacing: 0){
+            Spacer(minLength: 0)
             
             MetalViewRepresentable(
                 renderer: renderer,
@@ -32,9 +29,32 @@ struct MetalView: View {
                 .onAppear {
                     renderer = Renderer(metalView: metalView, filter: selectedFilter)
                 }
-                .frame(width: 800, height: 500, alignment: .center)
+                .frame(width: image.size.width / 2, height: image.size.height / 2, alignment: .topLeading)
+                .padding()
             
-            filterController
+            Spacer(minLength: 0)
+            
+            Divider()
+            
+            VStack(alignment: .leading, spacing:  16) {
+                filterController
+                Spacer()
+            }
+            .frame(width: 250)
+            .padding()
+        }
+        .toolbar {
+            Button {
+                print("supposedly add image")
+            } label: {
+                Image(systemName: "plus")
+            }
+            
+            Button {
+                print("supposedly share image")
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+            }
         }
     }
     
