@@ -14,6 +14,7 @@ class Filter: ObservableObject, Hashable {
     
     enum FilterType: CaseIterable {
         case brightness
+        case contrast
         case grayscale
         case rgbToGbr
         case pixelated
@@ -21,6 +22,7 @@ class Filter: ObservableObject, Hashable {
         var title: String {
             switch self {
             case .brightness: return "Brightness"
+            case .contrast: return "Contrast"
             case .grayscale: return "Grayscale"
             case .rgbToGbr: return "RGB to GBR"
             case .pixelated: return "Pixelated"
@@ -30,6 +32,7 @@ class Filter: ObservableObject, Hashable {
         var controls: [Control] {
             switch self {
             case .brightness: return [Control(name: "Ratio", range: -1...1, initialValue: 0)]
+            case .contrast: return [Control(name: "Ratio", range: -1...1, initialValue: 0)]
             case .grayscale: return []
             case .rgbToGbr: return []
             case .pixelated: return []

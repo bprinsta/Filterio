@@ -14,6 +14,7 @@ class Renderer: NSObject {
     var pipelineState: MTLComputePipelineState!
     
     var brightnessPipeline: MTLComputePipelineState!
+    var contrastPipeline: MTLComputePipelineState!
     var rgbToGbrPipeline: MTLComputePipelineState!
     var grayscalePipeline: MTLComputePipelineState!
     var pixelatePipeline: MTLComputePipelineState!
@@ -41,6 +42,7 @@ class Renderer: NSObject {
 
         do {
             rgbToGbrPipeline = try Renderer.buildComputePipelineWithFunction(name: "rgb_to_gbr", with: device, metalKitView: metalView)
+            contrastPipeline = try Renderer.buildComputePipelineWithFunction(name: "contrast", with: device, metalKitView: metalView)
             brightnessPipeline = try Renderer.buildComputePipelineWithFunction(name: "brightness", with: device, metalKitView: metalView)
             grayscalePipeline = try Renderer.buildComputePipelineWithFunction(name: "grayscale", with: device, metalKitView: metalView)
             pixelatePipeline = try Renderer.buildComputePipelineWithFunction(name: "pixelate", with: device, metalKitView: metalView)
@@ -61,6 +63,7 @@ class Renderer: NSObject {
         selectedFilter = filter
         switch filter.type {
         case .brightness: pipelineState = brightnessPipeline
+        case .contrast: pipelineState = contrastPipeline
         case .rgbToGbr: pipelineState = rgbToGbrPipeline
         case .grayscale: pipelineState = grayscalePipeline
         case .pixelated: pipelineState = pixelatePipeline
