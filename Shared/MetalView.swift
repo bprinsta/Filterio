@@ -11,12 +11,15 @@ import MetalKit
 struct MetalView: View {
     @State private var renderer: Renderer?
     @State private var metalView: MTKView = MTKView()
-    @State private var selectedFilter: Filter = Filter(type: .brightness)
     @State private var image: NSImage
+    
+    @State private var selectedFilterType: FilterType = .brightness
+    @State private var selectedFilterViewModel: FilterViewModel
     
     init() {
         let image = NSImage(byReferencing: Bundle.main.url(forResource: "nature", withExtension: "jpg")!)
         self.image = image
+        selectedFilterViewModel = FilterViewModel(type: .brightness)
     }
     
     var body: some View {
@@ -27,7 +30,8 @@ struct MetalView: View {
                 renderer: renderer,
                 metalView: $metalView)
                 .onAppear {
-                    renderer = Renderer(metalView: metalView, filter: selectedFilter)
+                    renderer = Renderer(metalView: metalView, filter: selectedFilterViewModel.toFilter())
+                    selectedFilterViewModel.delegate = renderer
                 }
                 .frame(width: image.size.width / 2, height: image.size.height / 2, alignment: .topLeading)
                 .padding()
@@ -56,30 +60,25 @@ struct MetalView: View {
                 Image(systemName: "square.and.arrow.up")
             }
         }
+        .onChange(of: selectedFilterType) { newValue in
+            selectedFilterViewModel = FilterViewModel(type: newValue, delegate: renderer)
+            renderer?.apply(filter: selectedFilterViewModel.toFilter())
+        }
     }
     
     var filterController: some View {
         Form(content: {
             Section {
-                Picker("Filter", selection: $selectedFilter) {
-                    ForEach(Filter.allTypes, id: \.self) {
-                        Text($0.type.title)
+                Picker("Filter", selection: $selectedFilterType) {
+                    ForEach(FilterType.allCases, id: \.self) {
+                        Text($0.title)
                     }
                 }
                 .pickerStyle(.menu)
-                .onChange(of: selectedFilter) { newValue in
-                    renderer?.apply(filter: newValue)
-                }
             }
             
-            ForEach($selectedFilter.controls) { $control in
-                Slider(value: $control.value, in: control.range) {
-                    Text("\(control.name)")
-                } minimumValueLabel: {
-                    Text(String(format: "%.2f", control.range.lowerBound))
-                } maximumValueLabel: {
-                    Text(String(format: "%.2f", control.range.upperBound))
-                }
+            ForEach(selectedFilterViewModel.controlViewModels) { viewModel in
+                FilterControlView(viewModel: viewModel, delegate: selectedFilterViewModel)
             }
         })
     }

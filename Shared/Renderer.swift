@@ -20,11 +20,11 @@ class Renderer: NSObject {
     var grayscalePipeline: MTLComputePipelineState!
     var pixelatePipeline: MTLComputePipelineState!
     
-    var selectedFilter: Filter
+    var selectedFilter: FilterS
     
     var image: MTLTexture!
     
-    init(metalView: MTKView, filter: Filter) {
+    init(metalView: MTKView, filter: FilterS) {
         guard let device = MTLCreateSystemDefaultDevice(),
               let commandQueue = device.makeCommandQueue() else {
                   fatalError("GPU not available")
@@ -61,7 +61,7 @@ class Renderer: NSObject {
     }
     
     /// Switch the currently active pipeline state to use a given filter
-    func apply(filter: Filter) {
+    func apply(filter: FilterS) {
         selectedFilter = filter
         switch filter.type {
         case .brightness: pipelineState = brightnessPipeline
@@ -115,7 +115,10 @@ extension Renderer: MTKViewDelegate {
     
     func setFilterInputs(commandEncoder: MTLComputeCommandEncoder) {
         for (index, control) in selectedFilter.controls.enumerated() {
-            commandEncoder.setBytes(&control.outputValue, length: MemoryLayout<Float>.stride, index: 10 + index)
+            var value = control.value
+            commandEncoder.setBytes(&value, length: MemoryLayout<Float>.stride, index: 10 + index)
         }
     }
 }
+
+extension Renderer: FilterViewModelDelegate {}

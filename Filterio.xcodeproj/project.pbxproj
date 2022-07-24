@@ -21,8 +21,12 @@
 		AC05C289288C73A90042C00D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = AC05C287288C73A90042C00D /* Shaders.metal */; };
 		AC05C28B288C783E0042C00D /* nature.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC05C28A288C783E0042C00D /* nature.jpg */; };
 		AC05C28C288C783E0042C00D /* nature.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC05C28A288C783E0042C00D /* nature.jpg */; };
-		AC05C28E288CA2470042C00D /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C28D288CA2470042C00D /* Filter.swift */; };
-		AC05C28F288CA2470042C00D /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C28D288CA2470042C00D /* Filter.swift */; };
+		AC05C28E288CA2470042C00D /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C28D288CA2470042C00D /* FilterViewModel.swift */; };
+		AC05C28F288CA2470042C00D /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C28D288CA2470042C00D /* FilterViewModel.swift */; };
+		AC05C291288DDCDE0042C00D /* FilterControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C290288DDCDE0042C00D /* FilterControlView.swift */; };
+		AC05C292288DDCDE0042C00D /* FilterControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C290288DDCDE0042C00D /* FilterControlView.swift */; };
+		AC05C294288DEFB20042C00D /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C293288DEFB20042C00D /* Filter.swift */; };
+		AC05C295288DEFB20042C00D /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C293288DEFB20042C00D /* Filter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,7 +40,9 @@
 		AC05C284288C70470042C00D /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 		AC05C287288C73A90042C00D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		AC05C28A288C783E0042C00D /* nature.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nature.jpg; sourceTree = "<group>"; };
-		AC05C28D288CA2470042C00D /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		AC05C28D288CA2470042C00D /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
+		AC05C290288DDCDE0042C00D /* FilterControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterControlView.swift; sourceTree = "<group>"; };
+		AC05C293288DEFB20042C00D /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,14 +75,15 @@
 		AC05C262288C6ED50042C00D /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				AC05C293288DEFB20042C00D /* Filter.swift */,
+				AC05C296288DF1090042C00D /* FilterView */,
 				AC05C263288C6ED50042C00D /* FilterioApp.swift */,
 				AC05C264288C6ED50042C00D /* ContentView.swift */,
 				AC05C281288C6F200042C00D /* MetalView.swift */,
-				AC05C265288C6ED70042C00D /* Assets.xcassets */,
 				AC05C284288C70470042C00D /* Renderer.swift */,
 				AC05C287288C73A90042C00D /* Shaders.metal */,
+				AC05C265288C6ED70042C00D /* Assets.xcassets */,
 				AC05C28A288C783E0042C00D /* nature.jpg */,
-				AC05C28D288CA2470042C00D /* Filter.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -96,6 +103,15 @@
 				AC05C272288C6ED70042C00D /* macOS.entitlements */,
 			);
 			path = macOS;
+			sourceTree = "<group>";
+		};
+		AC05C296288DF1090042C00D /* FilterView */ = {
+			isa = PBXGroup;
+			children = (
+				AC05C28D288CA2470042C00D /* FilterViewModel.swift */,
+				AC05C290288DDCDE0042C00D /* FilterControlView.swift */,
+			);
+			path = FilterView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,11 +215,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC05C285288C70470042C00D /* Renderer.swift in Sources */,
-				AC05C28E288CA2470042C00D /* Filter.swift in Sources */,
+				AC05C28E288CA2470042C00D /* FilterViewModel.swift in Sources */,
 				AC05C282288C6F200042C00D /* MetalView.swift in Sources */,
+				AC05C294288DEFB20042C00D /* Filter.swift in Sources */,
 				AC05C275288C6ED70042C00D /* ContentView.swift in Sources */,
 				AC05C273288C6ED70042C00D /* FilterioApp.swift in Sources */,
 				AC05C288288C73A90042C00D /* Shaders.metal in Sources */,
+				AC05C291288DDCDE0042C00D /* FilterControlView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,11 +230,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC05C286288C70470042C00D /* Renderer.swift in Sources */,
-				AC05C28F288CA2470042C00D /* Filter.swift in Sources */,
+				AC05C28F288CA2470042C00D /* FilterViewModel.swift in Sources */,
 				AC05C283288C6F200042C00D /* MetalView.swift in Sources */,
+				AC05C295288DEFB20042C00D /* Filter.swift in Sources */,
 				AC05C276288C6ED70042C00D /* ContentView.swift in Sources */,
 				AC05C274288C6ED70042C00D /* FilterioApp.swift in Sources */,
 				AC05C289288C73A90042C00D /* Shaders.metal in Sources */,
+				AC05C292288DDCDE0042C00D /* FilterControlView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
