@@ -12,14 +12,7 @@ class Renderer: NSObject {
     static var commandQueue: MTLCommandQueue!
     static var library: MTLLibrary!
     var pipelineState: MTLComputePipelineState!
-    
-    var brightnessPipeline: MTLComputePipelineState!
-    var contrastPipeline: MTLComputePipelineState!
-    var gammaPipeline: MTLComputePipelineState!
-    var vignettePipeline: MTLComputePipelineState!
-    var rgbToGbrPipeline: MTLComputePipelineState!
-    var grayscalePipeline: MTLComputePipelineState!
-    var pixelatePipeline: MTLComputePipelineState!
+    var filterPipelines: [FilterType: MTLComputePipelineState]
     
     var selectedFilter: Filter
     
@@ -43,14 +36,10 @@ class Renderer: NSObject {
         print(nsImage.size.height)
 
         do {
-            // TODO: create dictionary of filter and pipeline instead of this
-            rgbToGbrPipeline = try Renderer.buildComputePipelineWithFunction(name: "rgb_to_gbr", with: device, metalKitView: metalView)
-            contrastPipeline = try Renderer.buildComputePipelineWithFunction(name: "contrast", with: device, metalKitView: metalView)
-            gammaPipeline = try Renderer.buildComputePipelineWithFunction(name: "gamma", with: device, metalKitView: metalView)
-            vignettePipeline = try Renderer.buildComputePipelineWithFunction(name: "vignette", with: device, metalKitView: metalView)
-            brightnessPipeline = try Renderer.buildComputePipelineWithFunction(name: "brightness", with: device, metalKitView: metalView)
-            grayscalePipeline = try Renderer.buildComputePipelineWithFunction(name: "grayscale", with: device, metalKitView: metalView)
-            pixelatePipeline = try Renderer.buildComputePipelineWithFunction(name: "pixelate", with: device, metalKitView: metalView)
+            filterPipelines = [FilterType: MTLComputePipelineState]()
+            for type in FilterType.allCases {
+                filterPipelines[type] = try Renderer.buildComputePipelineWithFunction(name: type.shaderName, with: device, metalKitView: metalView)
+            }
             image = try textureLoader.newTexture(URL: url, options: [:])
         } catch {
             fatalError("Unable to compile render pipeline state: \(error)")
@@ -65,15 +54,7 @@ class Renderer: NSObject {
     /// Switch the currently active pipeline state to use a given filter
     func apply(filter: Filter) {
         selectedFilter = filter
-        switch filter.type {
-        case .brightness: pipelineState = brightnessPipeline
-        case .contrast: pipelineState = contrastPipeline
-        case .gamma: pipelineState = gammaPipeline
-        case .vignette: pipelineState = vignettePipeline
-        case .rgbToGbr: pipelineState = rgbToGbrPipeline
-        case .grayscale: pipelineState = grayscalePipeline
-        case .pixelated: pipelineState = pixelatePipeline
-        }
+        pipelineState = filterPipelines[filter.type]
     }
     
     /// Create custom rendering pipeline, which loads shaders using `device`, out puts to the format of `metalKitView`

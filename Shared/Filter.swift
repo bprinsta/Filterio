@@ -53,4 +53,16 @@ enum FilterType: CaseIterable {
         case .pixelated: return []
         }
     }
+    
+    var shaderName: String {
+        switch self {
+        case .brightness: return "brightness"
+        case .contrast: return "contrast"
+        case .gamma: return "gamma"
+        case .vignette: return "vignette"
+        case .grayscale: return "grayscale"
+        case .rgbToGbr: return "rgb_to_gbr"
+        case .pixelated: return "pixelate"
+        }
+    }
 }
