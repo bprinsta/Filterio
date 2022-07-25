@@ -12,13 +12,14 @@ class Renderer: NSObject {
     static var commandQueue: MTLCommandQueue!
     static var library: MTLLibrary!
     var pipelineState: MTLComputePipelineState!
+    var textureLoader: MTKTextureLoader
     var filterPipelines: [FilterType: MTLComputePipelineState]
     
     var selectedFilter: Filter
     
     var image: MTLTexture!
     
-    init(metalView: MTKView, filter: Filter) {
+    init(metalView: MTKView, filter: Filter, imageURL: URL) {
         guard let device = MTLCreateSystemDefaultDevice(),
               let commandQueue = device.makeCommandQueue() else {
                   fatalError("GPU not available")
@@ -29,18 +30,14 @@ class Renderer: NSObject {
         metalView.device = device
         selectedFilter = filter
         
-        let textureLoader = MTKTextureLoader(device: device)
-        let url = Bundle.main.url(forResource: "nature", withExtension: "jpg")!
-        let nsImage = NSImage(byReferencing: url)
-        print(nsImage.size.width)
-        print(nsImage.size.height)
+        textureLoader = MTKTextureLoader(device: device)
 
         do {
             filterPipelines = [FilterType: MTLComputePipelineState]()
             for type in FilterType.allCases {
                 filterPipelines[type] = try Renderer.buildComputePipelineWithFunction(name: type.shaderName, with: device, metalKitView: metalView)
             }
-            image = try textureLoader.newTexture(URL: url, options: [:])
+            image = try textureLoader.newTexture(URL: imageURL, options: [:])
         } catch {
             fatalError("Unable to compile render pipeline state: \(error)")
         }
@@ -55,6 +52,14 @@ class Renderer: NSObject {
     func apply(filter: Filter) {
         selectedFilter = filter
         pipelineState = filterPipelines[filter.type]
+    }
+    
+    func updateImage(url: URL) {
+        do {
+            image = try textureLoader.newTexture(URL: url, options: [:])
+        } catch {
+            fatalError("Unable to switch image: \(error)")
+        }
     }
     
     /// Create custom rendering pipeline, which loads shaders using `device`, out puts to the format of `metalKitView`

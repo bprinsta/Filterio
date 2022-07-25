@@ -11,36 +11,37 @@ import MetalKit
 struct MetalView: View {
     @State private var renderer: Renderer?
     @State private var metalView: MTKView = MTKView()
-    @State private var image: NSImage
+
+    @State private var selectedImage = DefaultImages.nature
     
     @State private var selectedFilterType: FilterType = .brightness
-    @State private var selectedFilterViewModel: FilterViewModel
+    @State private var selectedFilterViewModel = FilterViewModel(type: .brightness)
     
-    init() {
-        let image = NSImage(byReferencing: Bundle.main.url(forResource: "nature", withExtension: "jpg")!)
-        self.image = image
-        selectedFilterViewModel = FilterViewModel(type: .brightness)
+    var image: NSImage {
+        print(NSImage(byReferencing: selectedImage.url).size)
+        return NSImage(byReferencing: selectedImage.url)
     }
     
     var body: some View {
         HStack(alignment: .top, spacing: 0){
             Spacer(minLength: 0)
             
+            // TODO: resize / scale / resample metal view based on size of the window
             MetalViewRepresentable(
                 renderer: renderer,
                 metalView: $metalView)
                 .onAppear {
-                    renderer = Renderer(metalView: metalView, filter: selectedFilterViewModel.toFilter())
+                    renderer = Renderer(metalView: metalView, filter: selectedFilterViewModel.toFilter(), imageURL: selectedImage.url)
                     selectedFilterViewModel.delegate = renderer
                 }
-                .frame(width: image.size.width / 2, height: image.size.height / 2, alignment: .topLeading)
+                .frame(width: selectedImage.width, height: selectedImage.height, alignment: .topLeading)
                 .padding()
             
             Spacer(minLength: 0)
             
             Divider()
             
-            filterController
+            controlPanel
                 .frame(width: 250)
                 .padding()
         }
@@ -62,35 +63,54 @@ struct MetalView: View {
             selectedFilterViewModel = FilterViewModel(type: newValue, delegate: renderer)
             renderer?.apply(filter: selectedFilterViewModel.toFilter())
         }
+        .onChange(of: selectedImage) { _ in
+            renderer?.updateImage(url: selectedImage.url)
+        }
     }
     
-    var filterController: some View {
-        VStack(alignment: .leading, spacing:  16) {
-            Form(content: {
-                Section {
-                    Picker("Filter", selection: $selectedFilterType) {
-                        ForEach(FilterType.allCases, id: \.self) {
-                            Text($0.title)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                }
-                
-                ForEach(selectedFilterViewModel.controlViewModels) { viewModel in
-                    FilterControlView(viewModel: viewModel, delegate: selectedFilterViewModel)
-                }
-            })
-            
-            if !selectedFilterViewModel.controlViewModels.isEmpty {
-                Button(role: .destructive) {
-                    selectedFilterViewModel.reset()
-                } label: {
-                    Text("Reset")
-                }
+    var controlPanel: some View {
+        Form {
+            imagePicker
+            filterPicker
+            filterControls
+            resetButton
+        }
+    }
+    
+    var imagePicker: some View {
+        Picker("Image", selection: $selectedImage) {
+            ForEach(DefaultImages.allCases, id: \.self) {
+                Text($0.name)
             }
-            
-            Spacer()
-            
+        }
+        .pickerStyle(.menu)
+    }
+    
+    var filterPicker: some View {
+        Picker("Filter", selection: $selectedFilterType) {
+            ForEach(FilterType.allCases, id: \.self) {
+                Text($0.title)
+            }
+        }
+        .pickerStyle(.menu)
+    }
+    
+    var filterControls: some View {
+        ForEach(selectedFilterViewModel.controlViewModels) { viewModel in
+            FilterControlView(viewModel: viewModel, delegate: selectedFilterViewModel)
+        }
+    }
+    
+    @ViewBuilder
+    var resetButton: some View {
+        if !selectedFilterViewModel.controlViewModels.isEmpty {
+            Button(role: .destructive) {
+                selectedFilterViewModel.reset()
+            } label: {
+                Text("Reset")
+            }
+        } else {
+            EmptyView()
         }
     }
 }
@@ -141,6 +161,7 @@ struct MetalViewRepresentable: ViewRepresentable {
         metalView.enableSetNeedsDisplay = true
         metalView.autoResizeDrawable = true
         metalView.isPaused = false
+        metalView.clearColor = .init(red: 0, green: 0, blue: 0, alpha: 0)
     }
     
     func updateMetalView() {}

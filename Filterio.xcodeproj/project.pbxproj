@@ -27,6 +27,12 @@
 		AC05C292288DDCDE0042C00D /* FilterControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C290288DDCDE0042C00D /* FilterControlView.swift */; };
 		AC05C294288DEFB20042C00D /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C293288DEFB20042C00D /* Filter.swift */; };
 		AC05C295288DEFB20042C00D /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC05C293288DEFB20042C00D /* Filter.swift */; };
+		AC7DE8B3288F30CA00CE0A70 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC7DE8B2288F30CA00CE0A70 /* Image.swift */; };
+		AC7DE8B4288F30CA00CE0A70 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC7DE8B2288F30CA00CE0A70 /* Image.swift */; };
+		AC7DE8BF288F3A5200CE0A70 /* yellowstone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC7DE8BE288F3A5200CE0A70 /* yellowstone.jpg */; };
+		AC7DE8C0288F3A5200CE0A70 /* yellowstone.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC7DE8BE288F3A5200CE0A70 /* yellowstone.jpg */; };
+		AC7DE8C2288F3AD400CE0A70 /* beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC7DE8C1288F3AD400CE0A70 /* beach.jpg */; };
+		AC7DE8C3288F3AD400CE0A70 /* beach.jpg in Resources */ = {isa = PBXBuildFile; fileRef = AC7DE8C1288F3AD400CE0A70 /* beach.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,6 +49,9 @@
 		AC05C28D288CA2470042C00D /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewModel.swift; sourceTree = "<group>"; };
 		AC05C290288DDCDE0042C00D /* FilterControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterControlView.swift; sourceTree = "<group>"; };
 		AC05C293288DEFB20042C00D /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		AC7DE8B2288F30CA00CE0A70 /* Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Image.swift; sourceTree = "<group>"; };
+		AC7DE8BE288F3A5200CE0A70 /* yellowstone.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = yellowstone.jpg; sourceTree = "<group>"; };
+		AC7DE8C1288F3AD400CE0A70 /* beach.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = beach.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,9 +89,12 @@
 				AC05C263288C6ED50042C00D /* FilterioApp.swift */,
 				AC05C264288C6ED50042C00D /* ContentView.swift */,
 				AC05C281288C6F200042C00D /* MetalView.swift */,
+				AC7DE8B2288F30CA00CE0A70 /* Image.swift */,
 				AC05C284288C70470042C00D /* Renderer.swift */,
 				AC05C287288C73A90042C00D /* Shaders.metal */,
 				AC05C265288C6ED70042C00D /* Assets.xcassets */,
+				AC7DE8BE288F3A5200CE0A70 /* yellowstone.jpg */,
+				AC7DE8C1288F3AD400CE0A70 /* beach.jpg */,
 				AC05C28A288C783E0042C00D /* nature.jpg */,
 			);
 			path = Shared;
@@ -195,6 +207,8 @@
 			files = (
 				AC05C28B288C783E0042C00D /* nature.jpg in Resources */,
 				AC05C277288C6ED70042C00D /* Assets.xcassets in Resources */,
+				AC7DE8C2288F3AD400CE0A70 /* beach.jpg in Resources */,
+				AC7DE8BF288F3A5200CE0A70 /* yellowstone.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -204,6 +218,8 @@
 			files = (
 				AC05C28C288C783E0042C00D /* nature.jpg in Resources */,
 				AC05C278288C6ED70042C00D /* Assets.xcassets in Resources */,
+				AC7DE8C3288F3AD400CE0A70 /* beach.jpg in Resources */,
+				AC7DE8C0288F3A5200CE0A70 /* yellowstone.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +231,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC05C285288C70470042C00D /* Renderer.swift in Sources */,
+				AC7DE8B3288F30CA00CE0A70 /* Image.swift in Sources */,
 				AC05C28E288CA2470042C00D /* FilterViewModel.swift in Sources */,
 				AC05C282288C6F200042C00D /* MetalView.swift in Sources */,
 				AC05C294288DEFB20042C00D /* Filter.swift in Sources */,
@@ -230,6 +247,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AC05C286288C70470042C00D /* Renderer.swift in Sources */,
+				AC7DE8B4288F30CA00CE0A70 /* Image.swift in Sources */,
 				AC05C28F288CA2470042C00D /* FilterViewModel.swift in Sources */,
 				AC05C283288C6F200042C00D /* MetalView.swift in Sources */,
 				AC05C295288DEFB20042C00D /* Filter.swift in Sources */,
