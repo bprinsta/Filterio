@@ -16,6 +16,7 @@ class Renderer: NSObject {
     var brightnessPipeline: MTLComputePipelineState!
     var contrastPipeline: MTLComputePipelineState!
     var gammaPipeline: MTLComputePipelineState!
+    var vignettePipeline: MTLComputePipelineState!
     var rgbToGbrPipeline: MTLComputePipelineState!
     var grayscalePipeline: MTLComputePipelineState!
     var pixelatePipeline: MTLComputePipelineState!
@@ -42,9 +43,11 @@ class Renderer: NSObject {
         print(nsImage.size.height)
 
         do {
+            // TODO: create dictionary of filter and pipeline instead of this
             rgbToGbrPipeline = try Renderer.buildComputePipelineWithFunction(name: "rgb_to_gbr", with: device, metalKitView: metalView)
             contrastPipeline = try Renderer.buildComputePipelineWithFunction(name: "contrast", with: device, metalKitView: metalView)
             gammaPipeline = try Renderer.buildComputePipelineWithFunction(name: "gamma", with: device, metalKitView: metalView)
+            vignettePipeline = try Renderer.buildComputePipelineWithFunction(name: "vignette", with: device, metalKitView: metalView)
             brightnessPipeline = try Renderer.buildComputePipelineWithFunction(name: "brightness", with: device, metalKitView: metalView)
             grayscalePipeline = try Renderer.buildComputePipelineWithFunction(name: "grayscale", with: device, metalKitView: metalView)
             pixelatePipeline = try Renderer.buildComputePipelineWithFunction(name: "pixelate", with: device, metalKitView: metalView)
@@ -66,6 +69,7 @@ class Renderer: NSObject {
         case .brightness: pipelineState = brightnessPipeline
         case .contrast: pipelineState = contrastPipeline
         case .gamma: pipelineState = gammaPipeline
+        case .vignette: pipelineState = vignettePipeline
         case .rgbToGbr: pipelineState = rgbToGbrPipeline
         case .grayscale: pipelineState = grayscalePipeline
         case .pixelated: pipelineState = pixelatePipeline

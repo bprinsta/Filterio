@@ -25,6 +25,7 @@ enum FilterType: CaseIterable {
     case brightness
     case contrast
     case gamma
+    case vignette
     case grayscale
     case rgbToGbr
     case pixelated
@@ -34,6 +35,7 @@ enum FilterType: CaseIterable {
         case .brightness: return "Brightness"
         case .contrast: return "Contrast"
         case .gamma: return "Gamma"
+        case .vignette: return "Vignette"
         case .grayscale: return "Grayscale"
         case .rgbToGbr: return "RGB to GBR"
         case .pixelated: return "Pixelated"
@@ -42,9 +44,10 @@ enum FilterType: CaseIterable {
     
     var controls: [FilterControl] {
         switch self {
-        case .brightness: return [FilterControl(name: "Ratio", domain: -1...1, value: 0)]
-        case .contrast: return [FilterControl(name: "Ratio", domain: -1...1, value: 0)]
+        case .brightness: return [FilterControl(name: "brightness", domain: -1...1, value: 0)]
+        case .contrast: return [FilterControl(name: "contrast", domain: -1...1, value: 0)]
         case .gamma: return [FilterControl(name: "γ", domain: -1...1, value: 0, valueProcessor: { exp($0) })]
+        case .vignette: return [FilterControl(name: "inner radius", domain: 0...1, value: 1), FilterControl(name: "outer radius", domain: 0...1, value: 1)]
         case .grayscale: return []
         case .rgbToGbr: return []
         case .pixelated: return []
