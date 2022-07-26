@@ -81,6 +81,7 @@ extension Renderer: MTKViewDelegate {
             return
         }
         
+        // TODO: Refactor allow multiple pipelines to be applied simultaneously, with stack-like behavior
         commandEncoder.setComputePipelineState(pipelineState)
         commandEncoder.setTexture(image, index: 0)
         commandEncoder.setTexture(drawable.texture, index: 1)
