@@ -27,6 +27,7 @@ enum FilterType: CaseIterable {
     case gamma
     case vignette
     case grayscale
+    case saturation
     case rgbToGbr
     case pixelated
     
@@ -37,6 +38,7 @@ enum FilterType: CaseIterable {
         case .gamma: return "Gamma"
         case .vignette: return "Vignette"
         case .grayscale: return "Grayscale"
+        case .saturation: return "Saturation"
         case .rgbToGbr: return "RGB to GBR"
         case .pixelated: return "Pixelated"
         }
@@ -49,6 +51,7 @@ enum FilterType: CaseIterable {
         case .gamma: return [FilterControl(name: "γ", domain: -1...1, value: 0, valueProcessor: { exp($0) })]
         case .vignette: return [FilterControl(name: "inner radius", domain: 0...1, value: 1), FilterControl(name: "outer radius", domain: 0...1, value: 1)]
         case .grayscale: return []
+        case .saturation: return [FilterControl(name: "saturation", domain: -1...1, value: 0)]
         case .rgbToGbr: return []
         case .pixelated: return []
         }
@@ -61,6 +64,7 @@ enum FilterType: CaseIterable {
         case .gamma: return "gamma"
         case .vignette: return "vignette"
         case .grayscale: return "grayscale"
+        case .saturation: return "saturation"
         case .rgbToGbr: return "rgb_to_gbr"
         case .pixelated: return "pixelate"
         }

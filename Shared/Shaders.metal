@@ -10,6 +10,10 @@ using namespace metal;
 
 constant float PI = 3.1415926535897932384626433832795;
 
+float clamp(float value, float min, float max) {
+    return (value < min) ? min : ((value > max) ? max : value);
+}
+
 kernel void brightness(texture2d<float, access::read> input [[texture(0)]],
                     texture2d<float, access::write> output [[texture(1)]],
                     constant float &ratio [[buffer(10)]],
@@ -73,6 +77,20 @@ kernel void vignette(texture2d<float, access::read> input [[texture(0)]],
         color = float4(color.r * multiplier, color.g * multiplier, color.b * multiplier, 1);
         output.write(color, id);
     }
+}
+
+// Adjusts saturation of an image by interpolating between a gray level version of the image and the original image
+kernel void saturation(texture2d<float, access::read> input [[texture(0)]],
+                       texture2d<float, access::write> output [[texture(1)]],
+                       constant float &ratio [[buffer(10)]],
+                       uint2 id [[thread_position_in_grid]]) {
+    float4 color = input.read(id);
+    float luminance = color.r * 0.3 + color.g * 0.6 + color.b * 0.1;
+    color = float4(color.r + (color.r - luminance) * ratio,
+                   color.g + (color.g - luminance) * ratio,
+                   color.b + (color.b - luminance) * ratio, 1.0);
+    color = clamp(color, 0, 1);
+    output.write(color, id);
 }
 
 kernel void rgb_to_gbr(texture2d<float, access::read> input [[texture(0)]],
